@@ -1,2 +1,4 @@
 # udemy-node-js
-NodeJS - The Complete Guide - Exercises
+Exercises made while doing the Udemy's NodeJS - The Complete Guide Course by Maximilian Schwarzmüller.
+
+https://www.udemy.com/course/nodejs-the-complete-guide/
