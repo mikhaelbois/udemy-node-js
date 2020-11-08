@@ -1,10 +1,20 @@
-const http = require('http'); // http https path fs os
-const { handler } = require('./routes');
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
 
-const server = http.createServer(handler);
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public'))); // Needed to gain access to the files in public
 
-// Starts an "Event loop"
-// Keeps on running as long as there are event listeners registered
-// Timers -> Pending Callbacks -> Poll (New callbacks) -> Check (setImmediate()) -> Close Callbacks
-server.listen(5000);
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+
+app.use((req, res, next) => {
+    // res.status(404).send('<h1>404 Error - Page not found</h1>');
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+});
+
+app.listen(5000);
