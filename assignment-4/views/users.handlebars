@@ -1,0 +1,15 @@
+<main>
+    <header>
+        <h1>Users</h1>
+    </header>
+
+    {{#if users}}
+        <ul>
+        {{#each users}}
+            <li>{{name}}</li>
+        {{/each}}
+        </ul>
+    {{else}}
+        <p>No users</p>
+    {{/if}}
+</main>

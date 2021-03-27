@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Error - Page not found</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <title>{{docTitle}}</title>
+    <link rel="stylesheet" href="/main.css">
 </head>
 
 <body>
@@ -13,19 +13,17 @@
         <nav class="main-header__nav">
             <ul class="main-header__item-list">
                 <li class="main-header__item">
-                    <a href="/">Shop</a>
+                    <a {{#if activeHome}}class="active" {{/if}} href="/">Home</a>
                 </li>
                 <li class="main-header__item">
-                    <a href="/admin/add-product">Add Product</a>
+                    <a {{#if activeUsers}}class="active" {{/if}} href="/users">Users</a>
                 </li>
             </ul>
         </nav>
     </header>
-    <main>
-        <header>
-            <h1>404 Error - Page not found</h1>
-        </header>
-    </main>
+
+    {{{ body }}}
+
 </body>
 
 </html>

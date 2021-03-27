@@ -1,13 +1,11 @@
-const path = require('path');
 const express = require('express');
 const router = express.Router();
-const rootDir = require('../util/path');
 
-// get uses exact match
+const adminData = require('./admin');
+
 router.get('/', (req, res, next) => {
-    // res.send('<h1>First App</h1>');
-    // res.sendFile(path.join(__dirname, '..', 'views', 'shop.html'));
-    res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+    const { products } = adminData;
+    res.render('shop', { products, hasProducts: products.length > 0, docTitle: 'Shop', path: '/', activeShop: true, productCSS: true }); // Will use defined templating engine in app.js
 });
 
 module.exports = router;
