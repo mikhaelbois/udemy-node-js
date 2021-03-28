@@ -3,10 +3,24 @@
 
 <body>
     <%- include('../includes/navigation.ejs') %>
-    <main>
-        <header>
-            <h1>Product Detail</h1>
-        </header>
+    <main class="centered">
+        <% if (product) { %>
+            <header class="card__header">
+                <h1 class="product__title"><%= product.title %></h1>
+            </header>
+            <hr>
+            <div class="card__image">
+                <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+            </div>
+            <h2 class="product__price"><%= product.price %></h2>
+            <p class="product__description"><%= product.description %></p>
+
+            <%- include('../includes/addToCart.ejs') %>
+        <% } else { %>
+            <header class="card__header">
+                <h1 class="product__title">No Products</h1>
+            </header>
+        <% } %>
     </main>
 
 <%- include('../includes/end.ejs') %>
