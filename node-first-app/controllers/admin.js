@@ -16,9 +16,12 @@ exports.postAddProduct = (req, res, next) => {
         description = req.body.description,
         price = req.body.price
     );
-    product.save();
-
-    res.redirect('/admin/products');
+    
+    product.save().then(() => {
+        res.redirect('/admin/products');
+    }).catch(e => {
+        console.error(e.sqlMessage);
+    });
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -67,12 +70,14 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll(products => {
+    Product.fetchAll().then(([rows]) => {
         res.render('admin/product-list', {
-            products,
-            hasProducts: products.length > 0,
+            products: rows,
+            hasProducts: rows.length > 0,
             docTitle: 'Admin - Products',
             path: '/admin/products'
         });
+    }).catch(e => {
+        console.error(e.sqlMessage);
     });
 };
