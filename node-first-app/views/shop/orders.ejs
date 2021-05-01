@@ -4,35 +4,28 @@
 <body>
     <%- include('../includes/navigation.ejs') %>
     <main>
-        <% if (hasProducts) { %>
+        <% if (hasOrders) { %>
             <header>
                 <h1>Orders</h1>
             </header>
 
-            <div class="grid">
-                <% products.map(product => { %>
-                    <article class="card product-item">
-                        <header class="card__header">
-                            <h1 class="product__title"><%= product.title %></h1>
-                        </header>
-                        <div class="card__image">
-                            <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
-                        </div>
-                        <div class="card__content">
-                            <h2 class="product__price"><%= product.price %></h2>
-                            <p class="product__description"><%= product.description %></p>
-                        </div>
-                        <div class="card__actions">
-                            <form action="/add-to-cart" method="POST">
-                                <button class="btn" type="submit">Add to Cart</button>
-                            </form>
-                        </div>
-                    </article>
+            <ul>
+                <% orders.map(order => { %>
+                    <li>
+                        <h1>#<%= order.id %></h1>
+                        <ul>
+                            <% order.products.map(product => { %>
+                                <li class="card product-item">
+                                    <%= product.title %>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </li>
                 <% }) %>
-            </div>
+            </ul>
         <% } else { %>
             <header>
-                <h1>Orders - No Products</h1>
+                <h1>Orders - No orders</h1>
             </header>
         <% } %>
     </main>

@@ -9,18 +9,17 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-    const product = new Product(
-        id = null,
-        title = req.body.title,
-        imageUrl = req.body.imageUrl,
-        description = req.body.description,
-        price = req.body.price
-    );
-    
-    product.save().then(() => {
+    // req.user.create({
+    req.user.createProduct({ // createProduct is a magic method created by the relation
+        title: req.body.title,
+        imageUrl: req.body.imageUrl,
+        description: req.body.description,
+        price: req.body.price
+        // userId: req.user.id
+    }).then(() => {
         res.redirect('/admin/products');
     }).catch(e => {
-        console.error(e.sqlMessage);
+        console.error(e);
     });
 };
 
@@ -34,7 +33,7 @@ exports.getEditProduct = (req, res, next) => {
         return res.redirect('/products');
     }
 
-    Product.findById(productId, product => {
+    Product.findByPk(productId).then(product => {
         if (!product) {
             return res.redirect('/admin/products');
         }
@@ -45,39 +44,60 @@ exports.getEditProduct = (req, res, next) => {
             docTitle: `Edit - ${product.title}`,
             path: '/admin/edit-product'
         });
+    }).catch(e => {
+        console.error(e);
     });
 };
 
 exports.postEditProduct = (req, res, next) => {
-    const product = new Product(
-        id = req.body.id,
-        title = req.body.title,
-        imageUrl = req.body.imageUrl,
-        description = req.body.description,
-        price = req.body.price
-    );
-    product.save();
-
-    res.redirect('/admin/products');
+    Product.update({
+        title: req.body.title,
+        imageUrl: req.body.imageUrl,
+        description: req.body.description,
+        price: req.body.price
+    }, {
+        where: {
+            id: req.body.id
+        }
+    }).then(() => {
+        res.redirect('/admin/products');
+    }).catch(e => {
+        console.error(e);
+    });
 };
 
 exports.postDeleteProduct = (req, res, next) => {
     const { productId } = req.body;
 
-    Product.deleteById(productId, () => {
+    Product.destroy({
+        where: {
+            id: productId
+        }
+    }).then(() => {
         res.redirect('/admin/products');
+    }).catch(e => {
+        console.error(e);
     });
+
+    // Product.findByPk(productId).then(product => {
+    //     return product.destroy();
+    // }).then(() => {
+    //     res.redirect('/admin/products');
+    // }).catch(e => {
+    //     console.error(e);
+    // });
 };
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll().then(([rows]) => {
+    // Product.findAll().then((products) => {
+    req.user.getProducts().then((products) => { // Will only show products linked to the user
         res.render('admin/product-list', {
-            products: rows,
-            hasProducts: rows.length > 0,
+            products: products,
+            hasProducts: products.length > 0,
             docTitle: 'Admin - Products',
             path: '/admin/products'
         });
     }).catch(e => {
-        console.error(e.sqlMessage);
+        console.error(e);
     });
 };

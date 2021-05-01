@@ -1,4 +1,5 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/cart.css">
 </head>
 
 <body>
@@ -9,20 +10,26 @@
                 <h1>Cart</h1>
             </header>
 
-            <ul>
-                <% cartData.map(productData => { %>
-                    <li>
-                        <p>
-                            <%= productData.product.title %> (<%= productData.qty %>)
-                            <form action="/cart" method="POST">
-                                <input type="hidden" name="productId" value="<%= productData.product.id %>">
-                                <input type="hidden" name="action" value="remove">
-                                <button class="btn" type="submit">Remove</button>
-                            </form>
-                        </p>
+            <ul class="cart__item-list">
+                <% products.map(product => { %>
+                    <li class="cart__item">
+                        <h1><%= product.title %></h1>
+                        <h2>Quantity: <%= product.cartItem.quantity %></h2>
+                        <form action="/cart-remove" method="POST">
+                            <input type="hidden" name="productId" value="<%= product.id %>">
+                            <button class="btn danger" type="submit">Remove</button>
+                        </form>
                     </li>
                 <% }) %>
-                </ul>
+            </ul>
+
+            <hr>
+
+            <div class="centered">
+                <form action="/order-create" method="POST">
+                    <button class="btn" type="submit">Checkout</button>
+                </form>
+            </div>
         <% } else { %>
             <header>
                 <h1>Cart - No Products</h1>
